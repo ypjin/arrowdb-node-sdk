@@ -186,4 +186,4 @@ This project is open source and provided under the Apache Public License
 distribution for more details on the license.  Also, please take notice of the
 privacy notice at the end of the file.
 
-#### (C) Copyright 2012-2014, [Appcelerator](http://www.appcelerator.com/) Inc. All Rights Reserved.
+#### (C) Copyright 2015, [Appcelerator](http://www.appcelerator.com/) Inc. All Rights Reserved.
