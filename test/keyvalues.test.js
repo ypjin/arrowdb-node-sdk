@@ -177,22 +177,6 @@ describe('Keyvalues Test', function() {
 			});
 		});
 
-		it('Should query keyvalues successfully', function(done) {
-			arrowDBApp.keyValuesQuery({
-				name: name
-			}, function(err, result) {
-				assert.ifError(err);
-				assert(result.body);
-				assert(result.body.meta);
-				assert.equal(result.body.meta.code, 200);
-				assert.equal(result.body.meta.method_name, 'queryKeyValues');
-				assert.equal(result.body.response.keyvalues.length, 1);
-				var obj = result.body.response.keyvalues[0];
-				assert.equal(obj.value, 2);
-				done();
-			});
-		});
-
 		it('Should count keyvalues successfully', function(done) {
 			arrowDBApp.keyValuesCount(function(err, result) {
 				assert.ifError(err);
