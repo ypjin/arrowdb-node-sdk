@@ -17,7 +17,7 @@ var ArrowDB = require('../index'),
 	}),
 	arrowDBUsername = null,
 	arrowDBPassword = 'cocoafish',
-	name = 'SN',
+	name = 'SN_' + new Date().getTime().toString(),
 	value = '098765432';
 
 
@@ -49,7 +49,7 @@ describe('Keyvalues Test', function() {
 				arrowDBApp.usersLogin({
 					login: arrowDBUsername,
 					password: arrowDBPassword
-				}, function (err, result) {
+				}, function(err, result) {
 					assert.ifError(err);
 					assert(result);
 					done();
@@ -178,7 +178,9 @@ describe('Keyvalues Test', function() {
 		});
 
 		it('Should query keyvalues successfully', function(done) {
-			arrowDBApp.keyValuesQuery({}, function(err, result) {
+			arrowDBApp.keyValuesQuery({
+				name: name
+			}, function(err, result) {
 				assert.ifError(err);
 				assert(result.body);
 				assert(result.body.meta);
@@ -192,9 +194,7 @@ describe('Keyvalues Test', function() {
 		});
 
 		it('Should count keyvalues successfully', function(done) {
-			arrowDBApp.keyValuesCount({
-
-			}, function(err, result) {
+			arrowDBApp.keyValuesCount(function(err, result) {
 				assert.ifError(err);
 				assert(result.body);
 				assert(result.body.meta);

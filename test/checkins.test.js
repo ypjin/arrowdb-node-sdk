@@ -21,8 +21,8 @@ var ArrowDB = require('../index'),
 	event_id = null,
 	checkin_id = null,
 	checkin_id2 = null,
-	message = 'Test - checkins(event) - ' + new Date().getTime(),
-	newMessage = 'Test - new checkins(event) - ' + new Date().getTime();
+	message = 'Test - checkins(event) - ' + new Date().getTime().toString(),
+	newMessage = 'Test - new checkins(event) - ' + new Date().getTime().toString();
 
 describe('Checkins Test', function() {
 	this.timeout(50000);
@@ -128,19 +128,6 @@ describe('Checkins Test', function() {
 			});
 		});
 
-		it('Should query checkins successfully - query', function(done) {
-			arrowDBApp.checkinsQuery({}, function(err, result) {
-				assert.ifError(err);
-				assert(result.body);
-				assert(result.body.meta);
-				assert.equal(result.body.meta.code, 200);
-				assert.equal(result.body.meta.method_name, 'queryCheckins');
-				var obj = result.body.response.checkins[0];
-				assert.equal(obj.message, newMessage);
-				done();
-			});
-		});
-
 		it('Should query 0 checkin successfully - query', function(done) {
 			arrowDBApp.checkinsQuery({
 				where: {
@@ -175,9 +162,7 @@ describe('Checkins Test', function() {
 		});
 
 		it('Should count checkins successfully - count', function(done) {
-			arrowDBApp.checkinsCount({
-
-			}, function(err, result) {
+			arrowDBApp.checkinsCount(function(err, result) {
 				assert.ifError(err);
 				assert(result.body);
 				assert(result.body.meta);

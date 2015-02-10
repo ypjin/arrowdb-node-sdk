@@ -22,7 +22,6 @@ var ArrowDB = require('../index'),
 	arrowDBSubscriptionChannel2,
 	arrowDBSubscriptionToken1,
 	arrowDBSubscriptionToken2,
-	arrowDBSubscriptionsCount,
 	arrowDBPayload = {
 		alert: 'Push Notifications Test at ' + new Date().toISOString(),
 		sound: 'default'
@@ -64,7 +63,7 @@ describe('Push Notifications and Logs Test', function() {
 				arrowDBApp.usersLogin({
 					login: arrowDBUsername,
 					password: arrowDBPassword
-				}, function (err, result) {
+				}, function(err, result) {
 					assert.ifError(err);
 					assert(result);
 					done();
@@ -84,7 +83,6 @@ describe('Push Notifications and Logs Test', function() {
 				assert.equal(result.body.meta.method_name, 'push_notificationCount');
 				assert(result.body.meta.count || (result.body.meta.count === 0));
 				console.log('\tCurrent push subscriptions count: %s', result.body.meta.count);
-				arrowDBSubscriptionsCount = result.body.meta.count;
 				done();
 			});
 		});
@@ -101,21 +99,6 @@ describe('Push Notifications and Logs Test', function() {
 				assert(result.body.meta);
 				assert.equal(result.body.meta.code, 200);
 				assert.equal(result.body.meta.method_name, 'SubscribeNotification');
-				done();
-			});
-		});
-
-		it('Should return increased subscription count correctly', function(done) {
-			this.timeout(20000);
-			arrowDBApp.pushNotificationsCount(function(err, result) {
-				assert.ifError(err);
-				assert(result.body);
-				assert(result.body.meta);
-				assert.equal(result.body.meta.code, 200);
-				assert.equal(result.body.meta.method_name, 'push_notificationCount');
-				assert(result.body.meta.count || (result.body.meta.count === 0));
-				console.log('\tCurrent push subscriptions count: %s', result.body.meta.count);
-				assert.equal(result.body.meta.count, arrowDBSubscriptionsCount + 1);
 				done();
 			});
 		});
@@ -272,21 +255,6 @@ describe('Push Notifications and Logs Test', function() {
 	});
 
 	describe('.subscribeTokens', function() {
-		it('Should count subscriptions successfully', function(done) {
-			this.timeout(20000);
-			arrowDBApp.pushNotificationsCount(function(err, result) {
-				assert.ifError(err);
-				assert(result.body);
-				assert(result.body.meta);
-				assert.equal(result.body.meta.code, 200);
-				assert.equal(result.body.meta.method_name, 'push_notificationCount');
-				assert(result.body.meta.count || (result.body.meta.count === 0));
-				console.log('\tCurrent push subscriptions count: %s', result.body.meta.count);
-				arrowDBSubscriptionsCount = result.body.meta.count;
-				done();
-			});
-		});
-
 		it('Should subscribe device token successfully', function(done) {
 			this.timeout(20000);
 			arrowDBApp.pushNotificationsSubscribeToken({
@@ -299,21 +267,6 @@ describe('Push Notifications and Logs Test', function() {
 				assert(result.body.meta);
 				assert.equal(result.body.meta.code, 200);
 				assert.equal(result.body.meta.method_name, 'SubscribeNotificationByToken');
-				done();
-			});
-		});
-
-		it('Should return increased subscription count correctly', function(done) {
-			this.timeout(20000);
-			arrowDBApp.pushNotificationsCount(function(err, result) {
-				assert.ifError(err);
-				assert(result.body);
-				assert(result.body.meta);
-				assert.equal(result.body.meta.code, 200);
-				assert.equal(result.body.meta.method_name, 'push_notificationCount');
-				assert(result.body.meta.count || (result.body.meta.count === 0));
-				console.log('\tCurrent push subscriptions count: %s', result.body.meta.count);
-				assert.equal(result.body.meta.count, arrowDBSubscriptionsCount + 1);
 				done();
 			});
 		});
@@ -447,21 +400,6 @@ describe('Push Notifications and Logs Test', function() {
 	});
 
 	describe('.unsubscribeTokens', function() {
-		it('Should count subscriptions successfully', function(done) {
-			this.timeout(20000);
-			arrowDBApp.pushNotificationsCount(function(err, result) {
-				assert.ifError(err);
-				assert(result.body);
-				assert(result.body.meta);
-				assert.equal(result.body.meta.code, 200);
-				assert.equal(result.body.meta.method_name, 'push_notificationCount');
-				assert(result.body.meta.count || (result.body.meta.count === 0));
-				console.log('\tCurrent push subscriptions count: %s', result.body.meta.count);
-				arrowDBSubscriptionsCount = result.body.meta.count;
-				done();
-			});
-		});
-
 		it('Should unsubscribe device token successfully', function(done) {
 			this.timeout(20000);
 			arrowDBApp.pushNotificationsUnsubscribeToken({
@@ -472,21 +410,6 @@ describe('Push Notifications and Logs Test', function() {
 				assert(result.body.meta);
 				assert.equal(result.body.meta.code, 200);
 				assert.equal(result.body.meta.method_name, 'UnsubscribeNotificationByToken');
-				done();
-			});
-		});
-
-		it('Should return decreased subscription count correctly', function(done) {
-			this.timeout(20000);
-			arrowDBApp.pushNotificationsCount(function(err, result) {
-				assert.ifError(err);
-				assert(result.body);
-				assert(result.body.meta);
-				assert.equal(result.body.meta.code, 200);
-				assert.equal(result.body.meta.method_name, 'push_notificationCount');
-				assert(result.body.meta.count || (result.body.meta.count === 0));
-				console.log('\tCurrent push subscriptions count: %s', result.body.meta.count);
-				assert.equal(result.body.meta.count, arrowDBSubscriptionsCount - 1);
 				done();
 			});
 		});

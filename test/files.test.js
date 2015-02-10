@@ -20,8 +20,7 @@ var ArrowDB = require('../index'),
 	arrowDBPassword = 'cocoafish',
 	arrowDBFileId,
 	arrowDBFileName,
-	arrowDBFileNewName,
-	arrowDBFilesCount = 0;
+	arrowDBFileNewName;
 
 describe('Files Test', function() {
 	before(function(done) {
@@ -79,13 +78,12 @@ describe('Files Test', function() {
 				assert.equal(result.body.meta.method_name, 'queryFiles');
 				assert(result.body.response);
 				assert(result.body.response.files);
-				arrowDBFilesCount = result.body.response.files.length;
-				assert.equal(typeof arrowDBFilesCount, 'number');
+				assert.equal(typeof result.body.response.files.length, 'number');
 				done();
 			});
 		});
 
-		it('Should return the correct ACL number as queried before', function(done) {
+		it('Should count files number correctly', function(done) {
 			this.timeout(20000);
 			arrowDBApp.filesCount(function(err, result) {
 				assert.ifError(err);
@@ -95,8 +93,6 @@ describe('Files Test', function() {
 				assert.equal(result.body.meta.method_name, 'filesCount');
 				assert(result.body.meta.count || (result.body.meta.count === 0));
 				console.log('\tCurrent files count: %s', result.body.meta.count);
-				arrowDBFilesCount = result.body.meta.count;
-				assert.equal(result.body.meta.count, arrowDBFilesCount);
 				done();
 			});
 		});
@@ -121,21 +117,6 @@ describe('Files Test', function() {
 				assert(result.body.response.files[0].id);
 				arrowDBFileId = result.body.response.files[0].id;
 				assert.equal(result.body.response.files[0].name, arrowDBFileName);
-				done();
-			});
-		});
-
-		it('Files count should be increased', function(done) {
-			this.timeout(20000);
-			arrowDBApp.filesCount(function(err, result) {
-				assert.ifError(err);
-				assert(result.body);
-				assert(result.body.meta);
-				assert.equal(result.body.meta.code, 200);
-				assert.equal(result.body.meta.method_name, 'filesCount');
-				assert(result.body.meta.count || (result.body.meta.count === 0));
-				console.log('\tCurrent files count: %s', result.body.meta.count);
-				assert.equal(result.body.meta.count, arrowDBFilesCount + 1);
 				done();
 			});
 		});

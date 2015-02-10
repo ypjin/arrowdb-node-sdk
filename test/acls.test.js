@@ -26,8 +26,7 @@ var arrowDBUsername = null,
 	arrowDBWriterUsername2,
 	arrowDBWriterUserId2,
 
-	arrowDBACLName = 'aclTest',
-	arrowDBACLsCount = 0;
+	arrowDBACLName = 'aclTest_' + new Date().getTime().toString();
 
 
 describe('ACLs Test', function() {
@@ -232,13 +231,13 @@ describe('ACLs Test', function() {
 				assert.equal(result.body.meta.method_name, 'queryACL');
 				assert(result.body.response);
 				assert(result.body.response.acls);
-				arrowDBACLsCount = result.body.response.acls.length;
-				assert.equal(typeof arrowDBACLsCount, 'number');
+				assert.equal(typeof result.body.response.acls.length, 'number');
 				done();
 			});
 		});
+	});
 
-		it('Should return the correct ACL number as queried before', function(done) {
+		it('Should count ACL number correctly', function(done) {
 			this.timeout(20000);
 			this.arrowDBAppGeneral.aclsCount(function(err, result) {
 				assert.ifError(err);
@@ -248,11 +247,9 @@ describe('ACLs Test', function() {
 				assert.equal(result.body.meta.method_name, 'aclsCount');
 				assert(result.body.meta.count || (result.body.meta.count === 0));
 				console.log('\tCurrent acls count: %s', result.body.meta.count);
-				assert.equal(result.body.meta.count, arrowDBACLsCount);
 				done();
 			});
 		});
-	});
 
 	describe('.createACL', function() {
 		it('Should create ACL successfully', function(done) {
@@ -271,22 +268,6 @@ describe('ACLs Test', function() {
 				assert(result.body.response.acls);
 				assert(result.body.response.acls[0]);
 				assert.equal(result.body.response.acls[0].name, arrowDBACLName);
-				done();
-			});
-		});
-
-		it('ACLs count should be increased', function(done) {
-			this.timeout(20000);
-			this.arrowDBAppGeneral.aclsCount(function(err, result) {
-				assert.ifError(err);
-				assert(result.body);
-				assert(result.body.meta);
-				assert.equal(result.body.meta.code, 200);
-				assert.equal(result.body.meta.method_name, 'aclsCount');
-				assert(result.body.meta.count || (result.body.meta.count === 0));
-				assert.equal(typeof result.body.meta.count, 'number');
-				console.log('\tCurrent acls count: %s', result.body.meta.count);
-				assert.equal(result.body.meta.count, arrowDBACLsCount + 1);
 				done();
 			});
 		});
