@@ -23,8 +23,7 @@ var ArrowDB = require('../index'),
 	arrowDBUsername = null,
 	arrowDBUsernameManualSession = null,
 	manualSessionCookieString = null,
-	arrowDBPassword = 'cocoafish',
-	arrowDBUserCount = 0;
+	arrowDBPassword = 'cocoafish';
 
 describe('Users Test', function() {
 	before(function(done) {
@@ -60,7 +59,7 @@ describe('Users Test', function() {
 			});
 		});
 
-		it('Should return the correct user number as queried before', function(done) {
+		it('Should count user corrently', function(done) {
 			this.timeout(20000);
 			arrowDBApp.usersCount(function(err, result) {
 				assert.ifError(err);
@@ -71,9 +70,6 @@ describe('Users Test', function() {
 				// assert.equal(result.body.meta.method_name, 'countUser');
 				assert.equal(result.body.meta.method_name, 'usersCount');
 				assert(result.body.meta.count || (result.body.meta.count === 0));
-				arrowDBUserCount = result.body.meta.count;
-				console.log('\tCurrent users count: %s', result.body.meta.count);
-				assert.equal(result.body.meta.count, arrowDBUserCount);
 				done();
 			});
 		});
@@ -96,24 +92,6 @@ describe('Users Test', function() {
 				assert(result.body.response.users);
 				assert(result.body.response.users[0]);
 				assert.equal(result.body.response.users[0].username, arrowDBUsername);
-				done();
-			});
-		});
-
-		it('User count should be increased', function(done) {
-			this.timeout(20000);
-			arrowDBApp.usersCount(function(err, result) {
-				assert.ifError(err);
-				assert(result.body);
-				assert(result.body.meta);
-				assert.equal(result.body.meta.code, 200);
-				// A bug of https://jira.appcelerator.org/browse/CLOUDSRV-4022
-				// assert.equal(result.body.meta.method_name, 'countUser');
-				assert.equal(result.body.meta.method_name, 'usersCount');
-				assert(result.body.meta.count || (result.body.meta.count === 0));
-				assert.equal(typeof result.body.meta.count, 'number');
-				console.log('\tCurrent users count: %s', result.body.meta.count);
-				assert.equal(result.body.meta.count, arrowDBUserCount + 1);
 				done();
 			});
 		});
@@ -235,30 +213,9 @@ describe('Users Test', function() {
 				done();
 			});
 		});
-
-		it('User count should be decreased via rest call', function(done) {
-			this.timeout(20000);
-			// Delayed job and need time to wait for
-			setTimeout(function() {
-				arrowDBApp.get('/v1/users/count.json', function(err, result) {
-					assert.ifError(err);
-					assert(result.body);
-					assert(result.body.meta);
-					assert.equal(result.body.meta.code, 200);
-					// A bug of https://jira.appcelerator.org/browse/CLOUDSRV-4022
-					// assert.equal(result.body.meta.method_name, 'countUser');
-					assert.equal(result.body.meta.method_name, 'usersCount');
-					assert(result.body.meta.count || (result.body.meta.count === 0));
-					assert.equal(typeof result.body.meta.count, 'number');
-					console.log('\tCurrent users count: %s', result.body.meta.count);
-					assert.equal(result.body.meta.count, arrowDBUserCount);
-					done();
-				});
-			}, 2000);
-		});
 	});
 
-	describe('Manual Session Manamement', function () {
+	describe('Manual Session Manamement', function() {
 		it('Should create user successfully', function(done) {
 			this.timeout(20000);
 			arrowDBAppManualSession.usersCreate({

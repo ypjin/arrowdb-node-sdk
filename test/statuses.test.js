@@ -19,7 +19,9 @@ var ArrowDB = require('../index'),
 	arrowDBPassword = 'cocoafish',
 	event_id = null,
 	status_id,
-	message = 'Test - statuses';
+	eventName = 'Test - status(event)',
+	message = 'Test_statuses_' + new Date().getTime().toString(),
+	newMessage = 'Test_status_new_' + new Date().getTime().toString();
 
 describe('Statuses Test', function() {
 	this.timeout(50000);
@@ -51,7 +53,7 @@ describe('Statuses Test', function() {
 				arrowDBApp.usersLogin({
 					login: arrowDBUsername,
 					password: arrowDBPassword
-				}, function (err, result) {
+				}, function(err, result) {
 					assert.ifError(err);
 					assert(result);
 					done();
@@ -61,7 +63,7 @@ describe('Statuses Test', function() {
 
 		it('Should create an event successfully', function(done) {
 			arrowDBApp.eventsCreate({
-				name: 'Test - status(event)',
+				name: eventName,
 				start_time: new Date(),
 				duration: 8
 			}, function(err, result) {
@@ -78,7 +80,6 @@ describe('Statuses Test', function() {
 	});
 
 	describe('positive statuses tests', function() {
-
 		it('Should create a status successfully', function(done) {
 			arrowDBApp.statusesCreate({
 				message: message
@@ -110,11 +111,10 @@ describe('Statuses Test', function() {
 		});
 
 		it('Should update a status successfully', function(done) {
-			var message = 'Test - new status(new)';
 			arrowDBApp.statusesUpdate({
 				status_id: status_id,
 				event_id: event_id,
-				message: message,
+				message: newMessage,
 				response_json_depth: 1
 			}, function(err, result) {
 				assert.ifError(err);
@@ -123,7 +123,7 @@ describe('Statuses Test', function() {
 				assert.equal(result.body.meta.code, 200);
 				assert.equal(result.body.meta.method_name, 'updateStatus');
 				var obj = result.body.response.statuses[0];
-				assert.equal(obj.message, 'Test - new status(new)');
+				assert.equal(obj.message, newMessage);
 				assert.equal(obj.event_id, event_id);
 				done();
 			});
@@ -131,7 +131,7 @@ describe('Statuses Test', function() {
 
 		it('Should query statuses successfully', function(done) {
 			arrowDBApp.statusesQuery({
-
+				status_id: status_id
 			}, function(err, result) {
 				assert.ifError(err);
 				assert(result.body);
@@ -139,7 +139,7 @@ describe('Statuses Test', function() {
 				assert.equal(result.body.meta.code, 200);
 				assert.equal(result.body.meta.method_name, 'queryStatuses');
 				var obj = result.body.response.statuses[0];
-				assert.equal(obj.message, 'Test - new status(new)');
+				assert.equal(obj.message, newMessage);
 				done();
 			});
 		});
@@ -147,7 +147,7 @@ describe('Statuses Test', function() {
 		it('Should query 0 status successfully', function(done) {
 			arrowDBApp.statusesQuery({
 				where: {
-					'message': 'message'
+					message: 'message'
 				}
 			}, function(err, result) {
 				assert.ifError(err);
@@ -163,7 +163,7 @@ describe('Statuses Test', function() {
 
 		it('Should query 1 status successfully', function(done) {
 			arrowDBApp.statusesQuery({
-				'message': 'Test - new status(new)'
+				message: newMessage
 			}, function(err, result) {
 				assert.ifError(err);
 				assert(result.body);
@@ -189,7 +189,7 @@ describe('Statuses Test', function() {
 	describe('negative statuses tests', function() {
 		it('Should fail to create a status without message', function(done) {
 			arrowDBApp.statusesCreate({
-				name: 'Test - status'
+				name: eventName
 			}, function(err) {
 				assert(err);
 				assert.equal(err.statusCode, 400);
