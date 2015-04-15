@@ -1,6 +1,6 @@
 {
   "name": "arrowdb",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Appcelerator ArrowDB SDK for NodeJS",
   "keywords": [
     "appcelerator",
@@ -47,7 +47,7 @@
   "dependencies": {
     "debug": "^2.1.1",
     "lodash": "^2.4.1",
-    "appc-request-ssl": "1.0.21",
+    "appc-request-ssl": "1.0.28",
     "tough-cookie": "^0.12.1"
   },
   "devDependencies": {
