@@ -107,6 +107,16 @@ arrowDBApp.usersShowMe(ARROWDB_APPKEY, {
 });
 ```
 
+## Custom ACS Endpoint
+
+```javascript
+var ArrowDB = require('arrowdb');
+var arrowDBApp = new ArrowDB(arrowDBKey, {
+	    apiEntryPoint: "api.customacs.com",
+		prettyJson: true
+	});
+```
+
 ## General RestAPI call
 
 ```javascript
