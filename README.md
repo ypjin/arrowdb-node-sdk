@@ -76,6 +76,7 @@ arrowDBApp.usersLogin({
 
 ```javascript
 // HTTP call 1 with cookie:
+var ArrowDB = require('arrowdb');
 var arrowDBApp = new ArrowDB('Your_ARROWDB_APPKEY');
 
 arrowDBApp.usersLogin({
@@ -92,10 +93,7 @@ arrowDBApp.usersLogin({
 });
 
 // HTTP call 2 with cookie, after HTTP call 1:
-var ArrowDB = require('arrowdb');
-var arrowDBApp = new ArrowDB('Your_ARROWDB_APPKEY');
-
-arrowDBApp.usersShowMe(ARROWDB_APPKEY, {
+arrowDBApp.usersShowMe({
     req: req,
     res: res
 }, function(err, result) {
@@ -122,7 +120,7 @@ var arrowDBApp = new ArrowDB(arrowDBKey, {
 ```javascript
 var arrowDBApp = new ArrowDB('Your_ARROWDB_APPKEY');
 
-arrowDBApp.post(ARROWDB_APPKEY, '/v1/users/login.json', {
+arrowDBApp.post('/v1/users/login.json', {
     login: ARROWDB_USERNAME,
     password: ARROWDB_PASSWORD
 }, function(err, result) {
@@ -134,7 +132,7 @@ arrowDBApp.post(ARROWDB_APPKEY, '/v1/users/login.json', {
     console.log('ArrowDB returned body: %j', result.body);
     console.log('Cookie string returned: %s', result.cookieString);
 
-    arrowDBApp.get(ARROWDB_APPKEY, '/v1/users/show/me.json', function(err, result) {
+    arrowDBApp.get('/v1/users/show/me.json', function(err, result) {
         if (err) {
             console.error(err);
             return;
